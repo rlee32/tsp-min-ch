@@ -1,5 +1,4 @@
 #include "nano_timer.hh"
-#include "config.hh"
 #include "fileio.hh"
 #include "point_quadtree/point_quadtree.hh"
 #include "box_maker.hh"
@@ -17,21 +16,12 @@
 
 int main(int argc, const char** argv) {
     if (argc == 1) {
-        std::cout << "Arguments: config_file_path" << std::endl;
+        std::cout << "Arguments: instance_file output_file" << std::endl;
+        return EXIT_SUCCESS;
     }
-    // Read config file.
-    const std::string config_path = (argc == 1) ? "config.txt" : argv[1];
-    std::cout << "Reading config file: " << config_path << std::endl;
-    Config config(config_path);
-
-    // Read input files.
-    const std::optional<std::string> tsp_file_path_string = config.get("tsp_file_path");
-    if (not tsp_file_path_string) {
-        std::cout << "tsp_file_path not specified.\n";
-        return EXIT_FAILURE;
-    }
-    const std::optional<std::filesystem::path> tsp_file_path(*tsp_file_path_string);
-    const auto [x, y] = fileio::read_coordinates(*tsp_file_path_string);
+    std::string tsp_file_path_string(argv[1]);
+    const std::optional<std::filesystem::path> tsp_file_path(tsp_file_path_string);
+    const auto [x, y] = fileio::read_coordinates(tsp_file_path_string);
 
     point_quadtree::Domain domain(x, y);
     std::cout << "domain aspect ratio: " << domain.xdim(0) / domain.ydim(0) << std::endl;
@@ -227,10 +217,10 @@ int main(int argc, const char** argv) {
     std::cout << "total length: " << total_length << std::endl;
 
     // Write new tour if output path specified.
-    const auto &output_path = config.get("output_path");
-    if (output_path) {
-        fileio::write_ordered_points(tour, *output_path);
-        std::cout << "saved new tour to " << *output_path << std::endl;
+    if (argc > 2) {
+        std::string output_path(argv[2]);
+        fileio::write_ordered_points(tour, output_path);
+        std::cout << "saved new tour to " << output_path << std::endl;
     } else {
         std::cout << "no output_path specified; not writing result to file." << std::endl;
     }
