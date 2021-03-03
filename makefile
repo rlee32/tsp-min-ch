@@ -7,11 +7,10 @@ CXX_FLAGS += -I./ # include paths.
 
 LINK_FLAGS = # -lstdc++fs # filesystem
 
-SRCS = min-ch.cc tour.cc \
+SRCS = min-ch.cc \
     point_quadtree/node.cc \
     point_quadtree/point_quadtree.cc \
-    point_quadtree/point_inserter.cc \
-    cycle_check.cc
+    point_quadtree/point_inserter.cc
 
 %.o: %.cc; $(CXX) $(CXX_FLAGS) -o $@ -c $<
 

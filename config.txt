@@ -1,0 +1,9 @@
+# required.
+tsp_file_path   ../data/xqf131.tsp
+tsp_file_path   ../data/pbn423.tsp
+tsp_file_path   ../data/lrb744710.tsp
+tsp_file_path   input/monalisa100K.tsp
+tsp_file_path   ../data/xrb14233.tsp
+
+# if not specified, tours are not saved.
+output_path /tmp/initial.tour
